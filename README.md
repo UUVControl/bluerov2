@@ -26,6 +26,7 @@ What is possible ?
   - [gi, gobject](https://wiki.ubuntu.com/Novacut/GStreamer1.0)
   - PyYAML
 - [UUV Simulator](https://github.com/uuvsimulator/uuv_simulator)
+- [BlueROV2 Vehicle](https://github.com/fredvaz/bluerov2)
 
 
 ### Installation ###
