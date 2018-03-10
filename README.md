@@ -1,5 +1,7 @@
 # BlueRov2 ROS SITL
 
+This is a fork of bluerov_ros_playground to integration on UUV Simulator. Attention! It's not finished, it's in development.
+
 Scripts to help BlueRov2 integration with ROS.
 What is possible ?
 - Video streaming capture with opencv
@@ -8,7 +10,7 @@ What is possible ?
 - Simulation on UUV Simulator
 
 <p align="center">
-  <img src="doc/imgs/bluerov2_gazebo_underwater.png">
+  <img src="doc/imgs/bluerov2_uuv_simulator.png">
 </p>
 
 ## Getting Started
