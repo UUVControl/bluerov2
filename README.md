@@ -25,7 +25,7 @@ What is possible ?
   - numpy
   - [gi, gobject](https://wiki.ubuntu.com/Novacut/GStreamer1.0)
   - PyYAML
-- [freefloating_gazebo](https://github.com/freefloating-gazebo/freefloating_gazebo)
+- [UUV Simulator](https://github.com/uuvsimulator/uuv_simulator)
 
 
 ### Installation ###
@@ -38,7 +38,7 @@ What is possible ?
  4. Build and install it:
     - `$ catkin_make --pkg bluerov2_sitl`
     - if using ROS from source:
-        - `$./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --pkg bluerov_ros_playground`
+        - `$./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --pkg bluerov2_sitl`
  5. Reload your ROS env.
     - bash: `$ source devel/setup.sh`
     - zsh: `$ source devel/setup.sh`
