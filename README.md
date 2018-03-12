@@ -1,21 +1,19 @@
-# BlueRov2 ROS SITL
+# BlueROV2 ROS Simulation
 
-This is a fork of bluerov_ros_playground to integration on UUV Simulator. Attention! It's not finished, it's in development.
+Attention! It's not finished, it's in development
 
-Scripts to help BlueRov2 integration with ROS.
-What is possible ?
-- Video streaming capture with opencv
-- Read and write over mavlink protocol with MAVROS
-- Joystick interaction
-- Simulation on UUV Simulator
+This repository contains the robot description and necessary launch files to
+simulate the BlueROV2 (unmanned underwater vehicle) on [Unmanned Underwater Vehicle Simulator (UUV Simulator)](https://github.com/uuvsimulator/uuv_simulator). Additional it's possible run BlueROV2 in SITL using [mavros](http://wiki.ros.org/mavros), joystick interaction and video streaming capture with opencv based on [bluerov_playground](https://github.com/patrickelectric/bluerov_ros_playground) package from BlueRobotics.
+
+This work is in development at [Ingeniarius, Lda.](http://ingeniarius.pt/) and [Instituite of Systems and Robotics University of Coimbra](https://www.isr.uc.pt/) within the scope of MS thesis "Localization of an unmanned underwater vehicle using multiple water surface robots, multilateration, and sensor data fusion".
 
 <p align="center">
   <img src="doc/imgs/bluerov2_uuv_simulator.png">
 </p>
 
-## Getting Started
 
-### Requirements ###
+## Requirements
+
 - git
 - [ros-\*-desktop-full](http://wiki.ros.org/ROS/Installation)
   - kinetic or newer
@@ -25,64 +23,41 @@ What is possible ?
   - numpy
   - [gi, gobject](https://wiki.ubuntu.com/Novacut/GStreamer1.0)
   - PyYAML
-- [UUV Simulator](https://github.com/uuvsimulator/uuv_simulator)
-- [BlueROV2 Vehicle](https://github.com/fredvaz/bluerov2)
+- [UUV Simulator](https://uuvsimulator.github.io/)
 
 
-### Installation ###
- 1. Go to your ROS package source directory:
-    - `$ cd ros_workspace_path/src`
- 2. Clone this project.
-    - `$ git clone https://github.com/patr/bluerov2_sitl`
- 3. Go back to your ROS workspace:
-    - `$ cd ../`
- 4. Build and install it:
-    - `$ catkin_make --pkg bluerov2_sitl`
-    - if using ROS from source:
-        - `$./src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release --pkg bluerov2_sitl`
- 5. Reload your ROS env.
-    - bash: `$ source devel/setup.sh`
-    - zsh: `$ source devel/setup.sh`
+## Installation 
 
-## Running ##
+Clone this package in the `src` folder of you catkin workspace
 
-- BlueRov2 node
+```
+cd ~/catkin_ws/src
+git clone https://github.com/fredvaz/bluerov2.git
+```
 
-    For more information check [here](src/bridge/README.md).
+and then build your catkin workspace
 
-- Launch user example
+```bash
+cd ~/catkin_ws
+catkin_make # or <catkin build>, if you are using catkin_tools
+```
 
-    This example will start user example, reading data from mavlink, interacting with joystick over rc commands and showing ROV video stream.
-    - `roslaunch bluerov2_sitl user_mav.launch`
+## Running with UUV Simulator
 
-    To run QGC parallel with user_mav, it's necessary to run user_mav first. If it's necessary to change the input, the parameter `joy_dev` can be used to set the one used.
+To run a demonstration with the vehicle with teleoperation, you can run a UUV
+simulator Gazebo scenario, such as
 
-- Visualize video stream
+```bash
+roslaunch uuv_descriptions ocean_waves.launch
+```
 
-    Shows video stream using opencv and gstreamer
-    - `roslaunch bluerov2_sitl video.launch`
+and then
 
-    To capture video stream in user_mav/video and QGC at same time, it's necessary to modifie [gstreamer options](http://192.168.2.2:2770/camera), changing `! udpsink host=192.168.2.1 port=5600` to `! multiudpsink clients=192.168.2.1:5600,192.168.2.1:5601` and add the udp_port parameter when calling roslaunch (`video_udp_port:=5601`).
+```bash
+roslaunch bluerov2_gazebo upload_bluerov2.launch 
+```
 
-- UUV Simulator
-
-    This example allow SITL communication with UUV Simulator, right now the only interaction that happen is the thruster control using [thruster pwm fitting](https://colab.research.google.com/notebook#fileId=1CEDW9ONTJ8Aik-HVsqck8Y_EcHYLg0zK).
-    - Run SITL and start gazebo.launch
-    - `roslaunch bluerov2_sitl gazebo.launch`
-
-- UUV Simulator Teleop
-
-    It'll open a window with the camera stream and Gazebo, a joystick can be used to control the ROV.
-    - `roslaunch bluerov2_silt gazebo_teleop.launch`
-
-    To change the default joystick input (`/dev/input/js0`), it's possible add the parameter `joy_dev:=/dev/input/jsX` when launching the simulation.
-
-- RVIZ
-
-    Visualize 3D model
-    - `roslaunch bluerov2_sitl rviz.launch`
-
-### Running with SITL ###
+## Running with SITL 
 - Run ArduPilot SITL
 
     1. [Download ArduPilot and configure SITL](http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html).
@@ -98,10 +73,9 @@ What is possible ?
         - If necessary, change video source and resolution.
         - To test the udp reception: `gst-launch-1.0 -v udpsrc port=5600 ! application/x-rtp, payload=96 ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! fpsdisplaysink sync=false text-overlay=false`
 
-## Topics ##
-If you need more information about the topics and what you can access, take a look [here](doc/topics_and_data.md).
 
-## Software Layer Diagram ##
+
+## Diagram of the software components ##
 
 <pre>
                       +-----------------------+         +------------------------+
@@ -139,3 +113,14 @@ If you need more information about the topics and what you can access, take a lo
                                                         |                        | Control
                                                         +------------------------+
 </pre>
+
+
+## Topics
+
+If you need more information about the topics and what you can access, take a look [here](doc/topics_and_data.md).
+
+
+## License
+
+BlueROV2 package is open-sourced under the Apache-2.0 license. See the
+[LICENSE](LICENSE) file for details.
