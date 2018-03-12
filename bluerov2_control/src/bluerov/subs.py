@@ -1,5 +1,10 @@
 #!/usr/bin/env python
+"""
 
+From bluerov_ros_playground respository (https://github.com/patrickelectric/bluerov_ros_playground)
+Credits: patrickelectric
+
+"""
 import rospy
 import time
 import yaml

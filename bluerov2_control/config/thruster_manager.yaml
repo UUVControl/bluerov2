@@ -6,7 +6,7 @@ thruster_manager:
   thruster_frame_base: thruster_
   max_thrust: 1540.0
   timeout: -1
-  update_rate: 50
+  update_rate: 10
   ##################################################
   # Options to set the thruster models below
   ##################################################

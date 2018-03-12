@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 """
 
-From bluerov_playground respository (https://github.com/patrickelectric/bluerov_ros_playground)
+From bluerov_ros_playground respository (https://github.com/patrickelectric/bluerov_ros_playground)
 Credits: patrickelectric
 
 """
@@ -49,8 +49,15 @@ class Code(object):
 
         self.pub.subscribe_topic('/mavros/rc/override', OverrideRCIn)
         self.pub.subscribe_topic('/mavros/setpoint_velocity/cmd_vel', TwistStamped)
-        # We must change to /bluerov2/thrusters/x/input
-        self.pub.subscribe_topic('/BlueRov2/body_command', JointState)
+
+        # Thrusters Input
+        self.pub.subscribe_topic('/bluerov2/thrusters/0/input', FloatStamped)
+        self.pub.subscribe_topic('/bluerov2/thrusters/1/input', FloatStamped)
+        self.pub.subscribe_topic('/bluerov2/thrusters/2/input', FloatStamped)
+        self.pub.subscribe_topic('/bluerov2/thrusters/3/input', FloatStamped)
+        self.pub.subscribe_topic('/bluerov2/thrusters/4/input', FloatStamped)
+        self.pub.subscribe_topic('/bluerov2/thrusters/5/input', FloatStamped)
+
 
         self.sub.subscribe_topic('/joy', Joy)
         self.sub.subscribe_topic('/mavros/battery', BatteryState)
@@ -81,7 +88,7 @@ class Code(object):
 
     @staticmethod
     def pwm_to_thrust(pwm):
-        """Transform pwm to thruster value
+        """Transform pwm to thruster value is in UUV Simulator. Here we give an offset to positive and negative values.
         The equation come from:
             http://docs.bluerobotics.com/thrusters/#t100-thruster-specifications
             In our case we are using T100 Thrusters on BlueROV2
@@ -89,15 +96,19 @@ class Code(object):
             pwm (int): pwm value
 
         Returns:
-            float: Thrust value
+            int: pwm value offsetted to positive and negative values
         """
-        return -3.04338931856672e-13*pwm**5 \
-            + 2.27813523978448e-9*pwm**4 \
-            - 6.73710647138884e-6*pwm**3 \
-            + 0.00983670053385902*pwm**2 \
-            - 7.08023833982539*pwm \
-            + 2003.55692021905
-
+        # PWM to Forward
+        if pwm > 1500:
+            pwm = pwm * gain - 1500;
+        # PWM to Backward
+        else:
+            if pwm < 1500:
+                pwm = pwm * gain - 1500;
+        # PWM to STOP
+        else:
+            thrust = 0;
+        return
 
     def run(self):
         """Run user code
@@ -129,12 +140,20 @@ class Code(object):
             try:
                 # Get pwm output and send it to Gazebo model
                 rc = self.sub.get_data()['mavros']['rc']['out']['channels']
-                joint = JointState()
-                joint.name = ["thr{}".format(u + 1) for u in range(5)]
-                joint.position = [self.pwm_to_thrust(pwm) for pwm in rc]
 
-                # We must change to /bluerov2/thrusters/x/input
-                self.pub.set_data('/BlueRov2/body_command', joint)
+                # Variable object type of
+                _input = FloatStamped();
+                # Array size of rc
+                _input = [self.pwm_to_thrust(pwm) for pwm in rc]
+
+                # Send Thrusters Input FloatStamped
+                self.pub.set_data('bluerov2/thrusters/0/input', _input[0])
+                self.pub.set_data('bluerov2/thrusters/1/input', _input[1])
+                self.pub.set_data('bluerov2/thrusters/2/input', _input[2])
+                self.pub.set_data('bluerov2/thrusters/3/input', _input[3])
+                self.pub.set_data('bluerov2/thrusters/4/input', _input[4])
+                self.pub.set_data('bluerov2/thrusters/5/input', _input[5])
+
             except Exception as error:
                 print('rc error:', error)
 

@@ -1,5 +1,9 @@
 #!/usr/bin/env python
-"""Publish data to ROS topic
+"""
+
+From bluerov_ros_playground respository (https://github.com/patrickelectric/bluerov_ros_playground)
+Credits: patrickelectric
+
 """
 import mavros_msgs.msg
 import rospy
