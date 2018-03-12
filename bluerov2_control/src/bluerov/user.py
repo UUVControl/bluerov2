@@ -26,6 +26,8 @@ from sensor_msgs.msg import JointState, Joy
 from sensor_msgs.msg import BatteryState
 from mavros_msgs.msg import OverrideRCIn, RCIn, RCOut
 
+from uuv_gazebo_ros_plugins_msgs.msg import FloatStamped
+
 
 class Code(object):
 
@@ -100,15 +102,14 @@ class Code(object):
         """
         # PWM to Forward
         if pwm > 1500:
-            pwm = pwm * gain - 1500;
+            pwm = pwm - 1500;
         # PWM to Backward
-        else:
-            if pwm < 1500:
-                pwm = pwm * gain - 1500;
+        elif pwm < 1500:
+            pwm = pwm - 1500;
         # PWM to STOP
         else:
-            thrust = 0;
-        return
+            pwm = 0;
+        return pwm
 
     def run(self):
         """Run user code
@@ -116,43 +117,57 @@ class Code(object):
         while not rospy.is_shutdown():
             time.sleep(0.1)
             # Try to get data
-            try:
-                rospy.loginfo(self.sub.get_data()['mavros']['battery']['voltage'])
-                rospy.loginfo(self.sub.get_data()['mavros']['rc']['in']['channels'])
-                rospy.loginfo(self.sub.get_data()['mavros']['rc']['out']['channels'])
-            except Exception as error:
-                print('Get data error:', error)
+            #try:
+                #rospy.loginfo(self.sub.get_data()['mavros']['battery']['voltage'])
+                #rospy.loginfo(self.sub.get_data()['mavros']['rc']['in']['channels'])
+                #rospy.loginfo(self.sub.get_data()['mavros']['rc']['out']['channels'])
+            #except Exception as error:
+            #    print('Get data error:', error)
 
-            try:
+            #try:
                 # Get joystick data
-                joy = self.sub.get_data()['joy']['axes']
+            #    joy = self.sub.get_data()['joy']['axes']
 
                 # rc run between 1100 and 2000, a joy command is between -1.0 and 1.0
-                override = [int(val*400 + 1500) for val in joy]
-                for _ in range(len(override), 8):
-                    override.append(0)
+            #    override = [int(val*400 + 1500) for val in joy]
+            #    for _ in range(len(override), 8):
+            #        override.append(0)
                 # Send joystick data as rc output into rc override topic
                 # (fake radio controller)
-                self.pub.set_data('/mavros/rc/override', override)
-            except Exception as error:
-                print('joy error:', error)
+            #    self.pub.set_data('/mavros/rc/override', override)
+            #except Exception as error:
+            #    print('joy error:', error)
+
 
             try:
                 # Get pwm output and send it to Gazebo model
                 rc = self.sub.get_data()['mavros']['rc']['out']['channels']
 
                 # Variable object type of
-                _input = FloatStamped();
+                _input = FloatStamped()
                 # Array size of rc
-                _input = [self.pwm_to_thrust(pwm) for pwm in rc]
+                #_input.header.stamp = rospy.Time.now()
+                #_input.header.seq = 1
+                _input.data = self.pwm_to_thrust(rc[0]) # [self.pwm_to_thrust(pwm) for pwm in rc] #
 
                 # Send Thrusters Input FloatStamped
-                self.pub.set_data('bluerov2/thrusters/0/input', _input[0])
-                self.pub.set_data('bluerov2/thrusters/1/input', _input[1])
-                self.pub.set_data('bluerov2/thrusters/2/input', _input[2])
-                self.pub.set_data('bluerov2/thrusters/3/input', _input[3])
-                self.pub.set_data('bluerov2/thrusters/4/input', _input[4])
-                self.pub.set_data('bluerov2/thrusters/5/input', _input[5])
+                self.pub.set_data('/bluerov2/thrusters/0/input', _input)
+
+                _input.data = self.pwm_to_thrust(rc[1])
+                self.pub.set_data('/bluerov2/thrusters/1/input', _input)
+
+                _input.data = self.pwm_to_thrust(rc[2])
+                self.pub.set_data('/bluerov2/thrusters/2/input', _input)
+
+                _input.data = self.pwm_to_thrust(rc[3])
+                self.pub.set_data('/bluerov2/thrusters/3/input', _input)
+
+                _input.data = self.pwm_to_thrust(rc[4])
+                self.pub.set_data('/bluerov2/thrusters/4/input', _input)
+
+                _input.data = self.pwm_to_thrust(rc[5])
+                self.pub.set_data('/bluerov2/thrusters/5/input', _input)
+
 
             except Exception as error:
                 print('rc error:', error)
@@ -175,8 +190,10 @@ class Code(object):
 if __name__ == "__main__":
     try:
         rospy.init_node('user_node', log_level=rospy.DEBUG)
+        #rate = rospy.Rate(10) # 10hz
     except rospy.ROSInterruptException as error:
         print('pubs error with ROS: ', error)
         exit(1)
     code = Code()
     code.run()
+    #rate.sleep()
