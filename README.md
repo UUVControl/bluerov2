@@ -67,11 +67,9 @@ roslaunch bluerov2_gazebo start_pid_controller_demo.launch
     1. [Download ArduPilot and configure SITL](http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html).
     2. `$ cd ardupilot/ArsuSub`
     3. `$ sim_vehicle.py`
-    4. `$ roslaunch bluerov2_gazebo start_ardusub_sitl_demo.launch`
+    4. `$ roslaunch bluerov2_gazebo start_ardusub_sitl_demo.launch`
 
-    - To test mavros communication with SITL:
-        - `$ roslaunch mavros apm.launch fcu_url:=udp://0.0.0.0:14550@`
-
+  
 - Fake video stream
 
     - `$ gst-launch-1.0 videotestsrc ! video/x-raw,width=640,height=480 ! videoconvert ! x264enc ! rtph264pay ! udpsink host=127.0.0.1 port=5600`
