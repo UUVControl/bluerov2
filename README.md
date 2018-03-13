@@ -1,15 +1,16 @@
 # BlueROV2 ROS Simulation
 
-Attention! It's not finished, it's in development
+Attention! It's in development
 
 This repository contains the robot description and necessary launch files to
-simulate the BlueROV2 (unmanned underwater vehicle) on [Unmanned Underwater Vehicle Simulator (UUV Simulator)](https://github.com/uuvsimulator/uuv_simulator). Additional it's possible run BlueROV2 in SITL using [mavros](http://wiki.ros.org/mavros), joystick interaction and video streaming capture with opencv based on [bluerov_playground](https://github.com/patrickelectric/bluerov_ros_playground) package from BlueRobotics.
+simulate the BlueROV2 (unmanned underwater vehicle) on [Unmanned Underwater Vehicle Simulator (UUV Simulator)](https://github.com/uuvsimulator/uuv_simulator). Additional it's possible run BlueROV2 in SITL using [mavros](http://wiki.ros.org/mavros), joystick interaction and video streaming capture with opencv based on [bluerov_ros_playground](https://github.com/patrickelectric/bluerov_ros_playground) package from BlueRobotics.
 
 This work is in development at [Ingeniarius, Lda.](http://ingeniarius.pt/) and [Instituite of Systems and Robotics University of Coimbra](https://www.isr.uc.pt/) within the scope of MS thesis "Localization of an unmanned underwater vehicle using multiple water surface robots, multilateration, and sensor data fusion".
 
 <p align="center">
   <img src="doc/imgs/bluerov2_uuv_simulator.png">
 </p>
+
 
 
 ## Requirements
@@ -24,6 +25,7 @@ This work is in development at [Ingeniarius, Lda.](http://ingeniarius.pt/) and [
   - [gi, gobject](https://wiki.ubuntu.com/Novacut/GStreamer1.0)
   - PyYAML
 - [UUV Simulator](https://uuvsimulator.github.io/)
+
 
 
 ## Installation 
@@ -42,9 +44,10 @@ cd ~/catkin_ws
 catkin_make # or <catkin build>, if you are using catkin_tools
 ```
 
+
 ## Running with UUV Simulator
 
-To run a demonstration with the vehicle with teleoperation, you can run a UUV
+To run a demonstration with the vehicle, you can run a UUV
 simulator Gazebo scenario, such as
 
 ```bash
@@ -54,8 +57,9 @@ roslaunch uuv_descriptions ocean_waves.launch
 and then
 
 ```bash
-roslaunch bluerov2_gazebo upload_bluerov2.launch 
+roslaunch bluerov2_gazebo start_pid_controller_demo.launch 
 ```
+
 
 ## Running with SITL 
 - Run ArduPilot SITL
@@ -63,6 +67,7 @@ roslaunch bluerov2_gazebo upload_bluerov2.launch
     1. [Download ArduPilot and configure SITL](http://ardupilot.org/dev/docs/setting-up-sitl-on-linux.html).
     2. `$ cd ardupilot/ArsuSub`
     3. `$ sim_vehicle.py`
+    4. `$ roslaunch bluerov2_gazebo start_ardusub_sitl_demo.launch`
 
     - To test mavros communication with SITL:
         - `$ roslaunch mavros apm.launch fcu_url:=udp://0.0.0.0:14550@`
