@@ -22,13 +22,13 @@
   </xacro:default_pressure>
 
   <!-- Beacon Sensor  -->
-  <xacro:default_beacon namespace="${namespace}" parent_link="${namespace}/base_link">
+  <!-- <xacro:default_beacon namespace="${namespace}" parent_link="${namespace}/base_link">
     <origin xyz="0 0 0" rpy="0 0 0"/>
-  </xacro:default_beacon>
+  </xacro:default_beacon> -->
 
   <!-- Mount a camera -->
-  <!-- <xacro:default_camera namespace="${namespace}" parent_link="${namespace}/base_link" suffix="front">
+  <xacro:default_camera namespace="${namespace}" parent_link="${namespace}/base_link" suffix="front">
     <origin xyz="0 0 0.2" rpy="0 0 0"/>
-  </xacro:default_camera> -->
+  </xacro:default_camera>
 
 </robot>

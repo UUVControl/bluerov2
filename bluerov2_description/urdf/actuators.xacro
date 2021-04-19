@@ -38,7 +38,7 @@
   <!-- ###### TO BE IMPLEMENTED ###### -->
 
   <!-- Mount a Beacon actuator -->
-  <!-- <xacro:default_beacon namespace="${namespace}" parent_link="${namespace}/base_link">
+  <!--<xacro:default_beacon namespace="${namespace}" parent_link="${namespace}/base_link">
     <origin xyz="0 0 0" rpy="0 0 0"/>
   </xacro:default_beacon> -->
 

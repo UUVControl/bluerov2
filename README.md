@@ -1,12 +1,11 @@
 # BlueROV2 ROS Simulation
 
-Attention! It's in development
-
 This repository contains the robot description and necessary launch files to
 simulate the BlueROV2 (unmanned underwater vehicle) on [Unmanned Underwater Vehicle Simulator (UUV Simulator)](https://github.com/uuvsimulator/uuv_simulator). Additional it's possible run BlueROV2 in SITL using [mavros](http://wiki.ros.org/mavros), joystick interaction and video streaming capture with opencv based on [bluerov_ros_playground](https://github.com/patrickelectric/bluerov_ros_playground) package from BlueRobotics.
 
 This work is in development at [Ingeniarius, Lda.](http://ingeniarius.pt/) and [Instituite of Systems and Robotics University of Coimbra](https://www.isr.uc.pt/) within the scope of MS thesis "Localization of an unmanned underwater vehicle using multiple water surface robots, multilateration, and sensor data fusion".
 
+This package was forked from https://github.com/fredvaz/bluerov2, and ported to ROS melodic.
 <p align="center">
   <img src="doc/imgs/bluerov2_uuv_simulator.png">
 </p>
@@ -34,7 +33,7 @@ Clone this package in the `src` folder of you catkin workspace
 
 ```
 cd ~/catkin_ws/src
-git clone https://github.com/fredvaz/bluerov2.git
+https://github.com/UUVControl/bluerov2.git
 ```
 
 and then build your catkin workspace
@@ -51,7 +50,7 @@ To run a demonstration with the vehicle, you can run a UUV
 simulator Gazebo scenario, such as
 
 ```bash
-roslaunch uuv_descriptions ocean_waves.launch
+roslaunch uuv_gazebo_worlds  ocean_waves.launch
 ```
 
 and then

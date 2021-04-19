@@ -45,49 +45,21 @@
 
     <!-- From desistek underwater vehicle -->
     <gazebo>
-      <!-- Thruster ROS plugin -->
-     <plugin name="${robot_namespace}_${thruster_id}_thruster_model" filename="libthruster_ros_plugin.so">
-       <!-- Name of the thruster link -->
-       <linkName>${robot_namespace}/thruster_${thruster_id}</linkName>
-       <!-- Name of the joint between thruster and vehicle base link -->
-       <jointName>${robot_namespace}/thruster_${thruster_id}_joint</jointName>
-       <!-- Make the thruster aware of its id -->
-       <thrusterID>${thruster_id}</thrusterID>
-       <!-- Gain of the input command signal -->
-       <gain>1</gain>
-       <!-- Maximum allowed input value for the input signal for thruster unit -->
-       <!-- <clampMax>0</clampMax> -->
-       <!-- Minimum allowed value for the input signal for thruster unit -->
-       <!-- <clampMin>0</clampMin> -->
-       <!-- Minimum and maximum thrust force output allowed -->
-       <!-- <thrustMin>0</thrustMin> -->
-       <!-- <thrustMax>200</thrustMax> -->
-       <!--
-       Value from 0 to 1 to set the efficiency of the output thrust force
-       Default value is 1.0
-       -->
-       <thrust_efficiency>1</thrust_efficiency>
-       <!--
-       Value from 0 to 1 to set the efficiency of the propeller as a factor
-       to be multiplied to the current value of the state variable at each
-       iteration.
-       Default value is 1.0
-       -->
-       <propeller_efficiency>1</propeller_efficiency>
+	    <!-- Thruster ROS plugin -->
 
-       <!-- 2) First order model -->
-       <dynamics>
-         <type>FirstOrder</type>
-         <timeConstant>0.2</timeConstant>
-       </dynamics>
 
-       <conversion>
-         <type>Basic</type>
-         <rotorConstant>0.00001</rotorConstant>
-         <!-- <rotorConstant>0</rotorConstant> -->
-       </conversion>
+	    <xacro:macro name="thruster_macro"
+    params="robot_namespace thruster_id *origin">
+    <xacro:thruster_module_first_order_basic_fcn_macro
+      namespace="${robot_namespace}"
+      thruster_id="${thruster_id}"
+      mesh_filename="${prop_mesh_file}"
+      dyn_time_constant="0.05"
+      rotor_constant="0.00001">
+      <xacro:insert_block name="origin"/>
+    </xacro:thruster_module_first_order_basic_fcn_macro>
+  </xacro:macro>
 
-     </plugin>
    </gazebo>
 
     <gazebo reference="${robot_namespace}/thruster_${thruster_id}">
