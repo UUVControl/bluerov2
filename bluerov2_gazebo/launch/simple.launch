@@ -1,4 +1,3 @@
-
 <launch>
 
     <arg name="uuv_name" default="bluerov2"/>
@@ -34,14 +33,6 @@
         <arg name="z" value="$(arg z)"/>
         <arg name="yaw" value="$(arg yaw)"/>
         <!-- <arg name="use_ned_frame" value="$(arg use_ned_frame)"/> -->
-    </include>
-
-    <!-- Start the PID controller with its default parameters for the RexROV vehicle  -->
-    <include file="$(find bluerov2_control)/launch/start_pid_controller.launch">
-        <arg name="uuv_name" value="$(arg uuv_name)"/>
-        <arg name="teleop_on" value="$(arg teleop_on)"/>
-        <arg name="joy_id" value="$(arg joy_id)"/>
-        <arg name="use_ned_frame" value="$(arg use_ned_frame)"/>
     </include>
 
     <!-- Open RViz for visualization of sensor data and visualization markers -->

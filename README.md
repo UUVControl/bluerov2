@@ -56,10 +56,20 @@ roslaunch uuv_gazebo_worlds  ocean_waves.launch
 and then
 
 ```bash
-roslaunch bluerov2_gazebo start_pid_controller_demo.launch 
+roslaunch bluerov2_description upload_bluerov2.launch
 ```
 
 
+To publish a Ros message on the input topic of one of the thrusters, summon rqt
+
+```bash
+rqt
+```
+
+
+<p align="center">
+  <img src="doc/imgs/rqt.png">
+</p>
 ## Running with SITL 
 - Run ArduPilot SITL
 
@@ -74,47 +84,6 @@ roslaunch bluerov2_gazebo start_pid_controller_demo.launch
     - `$ gst-launch-1.0 videotestsrc ! video/x-raw,width=640,height=480 ! videoconvert ! x264enc ! rtph264pay ! udpsink host=127.0.0.1 port=5600`
         - If necessary, change video source and resolution.
         - To test the udp reception: `gst-launch-1.0 -v udpsrc port=5600 ! application/x-rtp, payload=96 ! rtpjitterbuffer ! rtph264depay ! avdec_h264 ! fpsdisplaysink sync=false text-overlay=false`
-
-
-
-## Diagram of the software components ##
-
-<pre>
-                      +-----------------------+         +------------------------+
-                      |     <b>Raspberry Pi</b>      |         |    <b>Topside Commputer</b>   |
-                      |    <b>ip 192.168.2.2</b>     |         |     <b>ip 192.168.2.1</b>     |
-                      |                       |         |                        |
-+-------+  Telemetry  | +-------------------+ |         |                        |
-|Pixhawk<-------------->USB         <b>MAVProxy</b>| |         |                        |
-+-------+    Pilot    | +                   + |         | +--------------------+ |
-            Control   | |            udpbcast<----------->:14550         <b>MAVROS</b>| |
-                      | +-------------------+ |  Pilot  | |(UDP)               | |
-                      |                       | Control | |                    | |
-                      | +-------------------+ |         | |       (ROS)        | |
-+---------+           | CSI+2       <b>raspivid</b>| |         | +------+/mavros+-----+ |
-|Raspberry+------------>camera              | |         |           ^            |
-| Camera  |           | port                | |         |           |            |
-+---------+           | +                   | |         | +---------v----------+ |
-                      | |                   | |         | |subs.py      pubs.py| |
-                      | +------------+stdout+ |         | |                    | |
-                      |                  +    |         | |                    | |
-                      |             Raw  |    |         | |                    | |
-                      |             H264 |    |         | |                    | |
-                      |                  v    |         | |      <b>user.py</b>       | |
-                      | +------------+ fdsrc+ |         | |                    | |
-                      | |<b>gstreamer</b>          | |         | |                    | |
-                      | |                   + |         | :5600 video.py       | |
-                      | |             udpsink+----------->(UDP)                | |
-                      | +-------------------+ |  Video  | +---------^----------+ |
-                      |                       | Stream  |           |            |
-                      +-----------------------+         |           +            |
-                                                        | +--------/joy--------+ |
-                                                        | |<b>joy</b>     (ROS)       | |         +--------+
-                                                        | |                  USB<----------+Joystick|
-                                                        | +--------------------+ |  Pilot  +--------+
-                                                        |                        | Control
-                                                        +------------------------+
-</pre>
 
 
 ## Topics
