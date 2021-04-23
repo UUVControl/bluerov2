@@ -66,6 +66,7 @@ To publish a Ros message on the input topic of one of the thrusters, summon rqt
 rqt
 ```
 
+And as shown search for one of the thrusters' input and modify the values for pwm.
 
 <p align="center">
   <img src="doc/imgs/rqt.png">
