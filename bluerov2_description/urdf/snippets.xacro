@@ -22,7 +22,7 @@
       thruster_id="${thruster_id}"
       mesh_filename="file://$(find bluerov2_description)/meshes/bluerov2_propcw.dae"
       dyn_time_constant="0.05"
-      rotor_constant="0.01">
+      rotor_constant="0.001">
       <xacro:insert_block name="origin"/>
     </xacro:thruster_module_first_order_basic_fcn_macro>
   </xacro:macro>
