@@ -10,7 +10,7 @@ This package was forked from https://github.com/fredvaz/bluerov2, and ported to 
   <img src="doc/imgs/bluerov2_uuv_simulator.png">
 </p>
 
-
+The control of the uuv will be done through simulink; you can find the simulink solution in ./bluerov2_control/MatlabSrc. Do not forget to set your Ros master node ip correctly and tune the pid parameters. The simulink solution used both Ros and control toolbox.
 
 ## Requirements
 
