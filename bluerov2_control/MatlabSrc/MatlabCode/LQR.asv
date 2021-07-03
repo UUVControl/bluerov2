@@ -1,0 +1,9 @@
+Q_state = eye(12);
+R_control = eye(6)
+
+
+[K, S, E] = lqrd(A, B, Q_state, R_control,Ts);
+
+disp('K computed via LQR:')
+K
+
