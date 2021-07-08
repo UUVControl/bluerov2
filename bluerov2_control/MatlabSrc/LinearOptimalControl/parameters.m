@@ -22,7 +22,7 @@ rg = [0 0 0.2];
 g = 9.81; % [m/s^2]
 
 %DcGain
-Kr = 0.001;
+Kr = 1.0000e-01;
 
 % Linear Skin friction
 Xu = 4.03;
@@ -58,6 +58,7 @@ D = zeros(12,6);
 % Process noise covariance
 Q = 1.2e-3;
 % % Measurement noise covariance
-R = 5e-3;
+R = 5e-6;
+S = 1.1519236000000001e-06;
 % Sampling time
 Ts = 0.01; % [s] 
